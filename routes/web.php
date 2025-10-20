@@ -1,19 +1,21 @@
 <?php
-
+use App\Http\Controllers\admin\TestimonialController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\SliderController;
 use App\Models\Slider;
+use App\Models\Testimonial;
 
 Route::get('/', function () {
     return view('frontend.home');
 });
 
 Route::get('/', function () {
-    
+
 
     $sliders = Slider::all();
-    return view('frontend.home',compact('sliders'));
+    $testimonials = Testimonial::all();
+    return view('frontend.home',compact('sliders','testimonials'));
 });
 Route::get('/dashboard', function () {
     return view('admin.dashbord');
@@ -30,6 +32,13 @@ Route::controller(SliderController::class)->middleware(['auth','verified'])->gro
     Route::post('/saveSlider','storeslider')->name('slider.store');
     Route::post('/sliderUpdate','updateslider')->name('slider.update');
     Route::get('/deleteSlider/{id}','deleteslider')->name('slider.delete');
+});
+
+Route::controller(TestimonialController::class)->middleware(['auth','verified'])->group(function (){
+    Route::get('/TestimonialIndex','Index')->name('Testimonial.index');
+    Route::post('/saveTestimonial','storeTestimonial')->name('Testimonial.store');
+    Route::post('/TestimonialUpdate','updateTestimonial')->name('Testimonial.update');
+    Route::get('/deleteTestimonial/{id}','deleteTestimonial')->name('Testimonial.delete');
 });
 
 require __DIR__.'/auth.php';
